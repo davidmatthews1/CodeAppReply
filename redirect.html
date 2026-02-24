@@ -4,7 +4,15 @@
     <script src="https://cdn.jsdelivr.net/npm/@azure/msal-browser@5.1.0/lib/msal-browser.min.js"></script>
     <script>
       window.onload = function() {
-        document.body.innerText = 'MSAL loaded, handling redirect...';
+        document.body.innerHTML = 'opener: ' + (window.opener ? 'EXISTS' : 'NULL') + '<br>';
+        document.body.innerHTML += 'URL: ' + window.location.href + '<br>';
+        
+        if (window.opener) {
+          // Try manually posting back to parent
+          window.opener.postMessage(window.location.href, '*');
+          document.body.innerHTML += 'postMessage sent<br>';
+        }
+
         const msalInstance = new msal.PublicClientApplication({
           auth: {
             clientId: "a863afd3-fd91-40e8-abed-ebab3bc1d7a2",
@@ -12,12 +20,11 @@
           }
         });
         msalInstance.initialize().then(() => {
-          document.body.innerText = 'Initialized, calling handleRedirectPromise...';
           return msalInstance.handleRedirectPromise();
         }).then((result) => {
-          document.body.innerText = 'Result: ' + JSON.stringify(result);
+          document.body.innerHTML += 'Result: ' + JSON.stringify(result) + '<br>';
         }).catch((err) => {
-          document.body.innerText = 'Error: ' + err.message;
+          document.body.innerHTML += 'Error: ' + err.message + '<br>';
         });
       };
     </script>
