@@ -1,29 +1,16 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script src="https://cdn.jsdelivr.net/npm/@azure/msal-browser@5.1.0/lib/msal-browser.min.js"></script>
+    <script src="https://alcdn.msauth.net/browser/2.38.4/js/msal-browser.min.js"></script>
     <script>
-      window.onload = async function() {
-        try {
-          const msalInstance = new msal.PublicClientApplication({
-            auth: {
-              clientId: "a863afd3-fd91-40e8-abed-ebab3bc1d7a2",
-              authority: "https://login.microsoftonline.com/ba167cb8-0550-49b3-9a3f-5450b1f55f3f",
-              redirectUri: "https://davidmatthews1.github.io/CodeAppReply/redirect.html"
-            }
-          });
-          await msalInstance.initialize();
-          
-          // For popup flows in MSAL v5 use this instead
-          await msalInstance.handleRedirectPromise();
-          
-          document.body.innerText = 'Done - window should close';
-          window.close();
-        } catch(err) {
-          document.body.innerText = 'Error: ' + err.message;
+      const msalInstance = new msal.PublicClientApplication({
+        auth: {
+          clientId: "a863afd3-fd91-40e8-abed-ebab3bc1d7a2",
+          authority: "https://login.microsoftonline.com/ba167cb8-0550-49b3-9a3f-5450b1f55f3f"
         }
-      };
+      });
+      msalInstance.handleRedirectPromise().catch(console.error);
     </script>
   </head>
-  <body>Completing authentication...</body>
+  <body></body>
 </html>
