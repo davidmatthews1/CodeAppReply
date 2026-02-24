@@ -4,6 +4,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@azure/msal-browser@5.1.0/lib/msal-browser.min.js"></script>
     <script>
       window.onload = function() {
+        document.body.innerText = 'MSAL loaded, handling redirect...';
         const msalInstance = new msal.PublicClientApplication({
           auth: {
             clientId: "a863afd3-fd91-40e8-abed-ebab3bc1d7a2",
@@ -11,10 +12,15 @@
           }
         });
         msalInstance.initialize().then(() => {
-          msalInstance.handleRedirectPromise().catch(console.error);
+          document.body.innerText = 'Initialized, calling handleRedirectPromise...';
+          return msalInstance.handleRedirectPromise();
+        }).then((result) => {
+          document.body.innerText = 'Result: ' + JSON.stringify(result);
+        }).catch((err) => {
+          document.body.innerText = 'Error: ' + err.message;
         });
       };
     </script>
   </head>
-  <body></body>
+  <body>Loading...</body>
 </html>
