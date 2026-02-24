@@ -3,15 +3,14 @@
   <head>
     <script src="https://cdn.jsdelivr.net/npm/@azure/msal-browser@2.38.4/lib/msal-browser.min.js"></script>
     <script>
-      window.onload = function() {
-        const msalInstance = new msal.PublicClientApplication({
-          auth: {
-            clientId: "a863afd3-fd91-40e8-abed-ebab3bc1d7a2",
-            authority: "https://login.microsoftonline.com/ba167cb8-0550-49b3-9a3f-5450b1f55f3f"
-          }
-        });
-        msalInstance.handleRedirectPromise().catch(console.error);
-      };
+      const msalInstance = new msal.PublicClientApplication({
+        auth: {
+          clientId: "a863afd3-fd91-40e8-abed-ebab3bc1d7a2",
+          authority: "https://login.microsoftonline.com/ba167cb8-0550-49b3-9a3f-5450b1f55f3f",
+          redirectUri: "https://davidmatthews1.github.io/CodeAppReply/redirect.html"
+        }
+      });
+      msalInstance.handleRedirectPromise().catch(console.error);
     </script>
   </head>
   <body></body>
