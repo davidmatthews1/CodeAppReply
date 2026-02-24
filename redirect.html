@@ -3,31 +3,27 @@
   <head>
     <script src="https://cdn.jsdelivr.net/npm/@azure/msal-browser@5.1.0/lib/msal-browser.min.js"></script>
     <script>
-      window.onload = function() {
-        document.body.innerHTML = 'opener: ' + (window.opener ? 'EXISTS' : 'NULL') + '<br>';
-        document.body.innerHTML += 'URL: ' + window.location.href + '<br>';
-        
-        if (window.opener) {
-          // Try manually posting back to parent
-          window.opener.postMessage(window.location.href, '*');
-          document.body.innerHTML += 'postMessage sent<br>';
+      window.onload = async function() {
+        try {
+          const msalInstance = new msal.PublicClientApplication({
+            auth: {
+              clientId: "a863afd3-fd91-40e8-abed-ebab3bc1d7a2",
+              authority: "https://login.microsoftonline.com/ba167cb8-0550-49b3-9a3f-5450b1f55f3f",
+              redirectUri: "https://davidmatthews1.github.io/CodeAppReply/redirect.html"
+            }
+          });
+          await msalInstance.initialize();
+          
+          // For popup flows in MSAL v5 use this instead
+          await msalInstance.handleRedirectPromise();
+          
+          document.body.innerText = 'Done - window should close';
+          window.close();
+        } catch(err) {
+          document.body.innerText = 'Error: ' + err.message;
         }
-
-        const msalInstance = new msal.PublicClientApplication({
-          auth: {
-            clientId: "a863afd3-fd91-40e8-abed-ebab3bc1d7a2",
-            authority: "https://login.microsoftonline.com/ba167cb8-0550-49b3-9a3f-5450b1f55f3f"
-          }
-        });
-        msalInstance.initialize().then(() => {
-          return msalInstance.handleRedirectPromise();
-        }).then((result) => {
-          document.body.innerHTML += 'Result: ' + JSON.stringify(result) + '<br>';
-        }).catch((err) => {
-          document.body.innerHTML += 'Error: ' + err.message + '<br>';
-        });
       };
     </script>
   </head>
-  <body>Loading...</body>
+  <body>Completing authentication...</body>
 </html>
